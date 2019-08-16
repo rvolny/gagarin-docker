@@ -33,3 +33,5 @@ If you wish to re-create containers from existing images.
 docker-compose up -d
 ```
 
+If you also deleted persistent database files, run `/init.sh` again.
+
