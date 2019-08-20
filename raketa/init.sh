@@ -7,7 +7,7 @@ cd /var/www/raketa
 php artisan key:generate && \
 php artisan migrate && \
 php artisan db:seed && \
-php artisan passport:client --personal && \
+php artisan passport:install && \
 php artisan storage:link
 
 mkdir /var/www/raketa/storage/app

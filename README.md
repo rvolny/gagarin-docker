@@ -11,23 +11,40 @@ Docker configuration for Gagarin project. Creates 3 containers:
 
 ## Installation
 
-```bash
-# 1. Clone repository
-git clone git@github.com:rvolny/gagarin-docker.git
+1. Clone repository
 
-# 2. Build images and run containers interactively
-docker-compose up --build
+   ```bash
+   git clone git@github.com:rvolny/gagarin-docker.git
+   ```
 
-# 3. When all containers are up and running, execute script to 
-# initialise Raketa back-end. You only need to do this once. Do 
-# not access Raketa back-end via web browser before you run this script.
-# TODO: Have to do this better way
-docker exec -it --user nginx gagarin-raketa /init.sh
-```
+2. Create .env file
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Setup environment  and replace all `___REPLACE___` strings with your values.
+
+   1. MYSQL_PASSWORD - application password
+   2. MYSQL_ROOT_PASSWORD - root password to setup database and grant privileges
+   3. DATA_PATH_HOST - local path to persistent MySQL data
+   4. MDBVUE_PASSWORD - git token to mdbvue repository
+
+4. Build images and run containers interactively
+
+   ```bash
+   docker-compose up --build
+   ```
+
+5. When all containers are up and running, execute script to initialize Raketa back-end. You only need to do this once. Do not access Raketa back-end via web browser before you run this script. **TODO**: Do this better way.
+
+   ```bash
+   docker exec -it --user nginx gagarin-raketa /init.sh
+   ```
 
 ## Re-create containers
 
-If you wish to re-create containers from existing images.
+If you wish to start existing containers run:
 
 ```bash
 docker-compose up -d

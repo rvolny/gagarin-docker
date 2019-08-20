@@ -5,6 +5,10 @@ LABEL maintainer="elman"
 # build doesn't work without setting dummy ARG first
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
+ARG LARAVEL_DOMAIN=localhost
+ENV LARAVEL_DOMAIN $LARAVEL_DOMAIN
+ARG LARAVEL_PORT=8000
+ENV LARAVEL_PORT $LARAVEL_PORT
 ARG MDBVUE_PASSWORD=___dummy___
 ENV MDBVUE_PASSWORD $MDBVUE_PASSWORD
 
@@ -39,12 +43,17 @@ RUN git clone https://github.com/rvolny/gagarin.git
 WORKDIR /var/www/gagarin
 
 # replace secrets
-RUN sed -i "s/\$PASSWORD/$MDBVUE_PASSWORD/g" \
+RUN sed -i "s/___MDBVUE_PASSWORD___/$MDBVUE_PASSWORD/g" \
 /var/www/gagarin/package.json
+
+# replace api url
+# TODO: there has to be a better way to do this
+RUN sed -i "s/raketa\.local/$LARAVEL_DOMAIN:$LARAVEL_PORT/g" \
+/var/www/gagarin/src/const.js
 
 # install application
 RUN NODE_ENV=testing npm install
-#RUN NODE_ENV=$NODE_ENV npm run build
+RUN NODE_ENV=$NODE_ENV npm run build
 
 # expose running port
 EXPOSE 443 80
