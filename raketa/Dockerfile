@@ -1,7 +1,6 @@
 # TODO
 # mount laravel log to external directory
 # mount storage to external directory
-# remove sudo package when init is correctly handled
 
 # derived from https://blog.pusher.com/docker-for-development-laravel-php/
 FROM nginx:mainline-alpine
@@ -24,7 +23,6 @@ ENV LARAVEL_PORT $LARAVEL_PORT
 
 # copy configuration
 COPY start.sh /start.sh
-COPY init.sh /init.sh
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf
 COPY site.conf /etc/nginx/sites-available/default.conf
@@ -61,6 +59,9 @@ openssh-client \
 sudo \
 supervisor
 
+# download wait-for-it script
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /wait-for-it.sh
+
 # create nginx folders and link configuration
 RUN mkdir -p /etc/nginx && \
 mkdir -p /etc/nginx/sites-available && \
@@ -69,7 +70,7 @@ mkdir -p /run/nginx && \
 ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf && \
 mkdir -p /var/log/supervisor && \
 rm -Rf /var/www/* && \
-chmod 755 /start.sh /init.sh
+chmod 755 /start.sh /wait-for-it.sh
 
 # configure php
 RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" \

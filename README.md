@@ -23,7 +23,7 @@ Docker configuration for Gagarin project. Creates 3 containers:
    cp .env.example .env
    ```
 
-3. Setup environment  and replace all `___REPLACE___` strings with your values.
+3. Setup environment and replace all `___REPLACE___` strings with your values.
 
    1. MYSQL_PASSWORD - application password
    2. MYSQL_ROOT_PASSWORD - root password to setup database and grant privileges
@@ -35,20 +35,12 @@ Docker configuration for Gagarin project. Creates 3 containers:
    ```bash
    docker-compose up --build
    ```
-
-5. When all containers are up and running, execute script to initialize Raketa back-end. You only need to do this once. Do not access Raketa back-end via web browser before you run this script. **TODO**: Do this better way.
-
-   ```bash
-   docker exec -it --user nginx gagarin-raketa /init.sh
-   ```
+5. Application will be available at http://localhost:8001, Swagger documentation at http://localhost:8000/api/documentation
 
 ## Re-create containers
 
-If you wish to start existing containers run:
+If you wish to start existing containers as daemons, run:
 
 ```bash
 docker-compose up -d
 ```
-
-If you also deleted persistent database files, run `/init.sh` again.
-
